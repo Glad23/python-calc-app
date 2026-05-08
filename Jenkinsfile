@@ -2,14 +2,24 @@ pipeline {
     agent any
     
     stages {
-        stage('Install') {
+        stage('checkout') {
             steps {
-                bat 'pip install -r requirements.txt'
+                checkout scm 
+            }
+        }
+        stages('Setup Environment') {
+            steps {
+                bat 'python -m venv venv'
+            }
+        }
+        stage('Install') {   
+            steps {
+                bat 'venv\\Scripts\\pip install -r requirements.txt'
             }
         }
         stage('Test') {
             steps {
-                bat 'python -m pytest'
+                bat 'venv\\Scripts\\pytest'
             }
         }
         stage('Deploy') {
@@ -18,4 +28,16 @@ pipeline {
             }
         }
     }
+}
+post {
+    always {
+        echo 'pipeline execution completed.'
+    }
+    Success {
+        echo 'SUCCESS'
+    }
+    Failure {
+        echo 'FAILED'
+    }
+}
 }
