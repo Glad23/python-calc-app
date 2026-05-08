@@ -2,12 +2,12 @@ pipeline {
     agent any
     
     stages {
-        stage('checkout') {
+        stage('Checkout') {
             steps {
                 checkout scm 
             }
         }
-        stages('Setup Environment') {
+        stage('Setup Environment') {
             steps {
                 bat 'python -m venv venv'
             }
@@ -28,7 +28,7 @@ pipeline {
             }
         }
     }
-}
+    
 post {
     always {
         echo 'pipeline execution completed.'
